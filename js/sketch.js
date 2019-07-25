@@ -1,8 +1,8 @@
 // '': empty; 'o': zero; 'x': cross
 let grid = [
-  ['', '', 'x'],
-  ['o', 'x', ''],
-  ['', '', 'x'],
+  ['', '', ''],
+  ['', '', ''],
+  ['', '', ''],
 ];
 
 let players = ['o', 'x'];
@@ -10,11 +10,7 @@ let currentPlayer;
 
 function setup() {
   createCanvas(400, 400);
-  if(random(1) < 0.5){
-    currentPlayer = players[0];
-  } else {
-    currentPlayer = players[1];
-  }
+  currentPlayer = random(players);
 }
 
 function draw() {
@@ -32,11 +28,13 @@ function draw() {
   // current grid situation
   textSize(32);
   strokeWeight(2);
-  for(let i=0; i<3; i++){
-    for(let j=0; j<3; j++){
-      let x = w*i + w/2;
-      let y = h*j + h/2;
-      let cellContent = grid[i][j];
+  for(let row=0; row<3; row++){
+    for(let col=0; col<3; col++){
+      let x = w*col + w/2;
+      let y = h*row + h/2;
+      // console.log(floor(x) + ", " + floor(y));
+      let cellContent = grid[row][col];
+      // console.log(cellContent);
       if(cellContent == players[0]){
         noFill();
         ellipse(x,y,w/2);
@@ -46,5 +44,15 @@ function draw() {
         line(x+off, y-off, x-off, y+off);
       }
     }
+  }
+}
+
+function mousePressed() {
+  let w = width/3;
+  let h = height/3;
+  let xVal = floor(mouseX/w), yVal = floor(mouseY/h);
+  if(grid[yVal][xVal] == ''){
+    grid[yVal][xVal] = currentPlayer;
+    currentPlayer = (currentPlayer == players[0]) ? players[1] : players[0];
   }
 }
